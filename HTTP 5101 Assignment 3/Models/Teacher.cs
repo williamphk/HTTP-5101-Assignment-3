@@ -13,5 +13,6 @@ namespace HTTP_5101_Assignment_3.Models
         public string TeacherEmployeeNumber;
         public DateTime TeacherHireDate;
         public decimal TeacherSalary;
+        public string ClassName;
     }
 }
