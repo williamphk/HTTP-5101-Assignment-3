@@ -59,7 +59,7 @@ namespace HTTP_5101_Assignment_3.Controllers
             {
                 //Access Column information by the DB column name as an index
                 Teacher NewTeacher = new Teacher();
-                NewTeacher.TeacherId = (int)ResultSet["teacherid"];
+                NewTeacher.TeacherId = Convert.ToInt32(ResultSet["teacherid"]);
                 NewTeacher.TeacherFname = (string)ResultSet["teacherfname"];
                 NewTeacher.TeacherLname = (string)ResultSet["teacherlname"];
 
@@ -110,7 +110,7 @@ namespace HTTP_5101_Assignment_3.Controllers
             while (ResultSet.Read())
             {
                 //Access Column information by the DB column name as an index
-                NewTeacher.TeacherId = (int)ResultSet["teacherid"];
+                NewTeacher.TeacherId = Convert.ToInt32(ResultSet["teacherid"]);
                 NewTeacher.TeacherFname = (string)ResultSet["teacherfname"];
                 NewTeacher.TeacherLname = (string)ResultSet["teacherlname"];
                 NewTeacher.TeacherEmployeeNumber = (string)ResultSet["employeenumber"];

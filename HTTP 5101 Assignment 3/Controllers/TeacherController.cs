@@ -20,6 +20,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         {
             TeacherDataController controller = new TeacherDataController();
             IEnumerable<Teacher> Teachers = controller.ListTeachers(SearchKey);
+
             return View(Teachers);
         }
 
@@ -28,7 +29,6 @@ namespace HTTP_5101_Assignment_3.Controllers
         {
             TeacherDataController controller = new TeacherDataController();
             Teacher NewTeacher = controller.FindTeacher(id);
-
 
             return View(NewTeacher);
         }

@@ -1,0 +1,17 @@
+﻿@model HTTP_5101_Assignment_3.Models.Class
+@{
+    ViewBag.Title = "Show";
+}
+
+<div id="containershow">
+    <nav>
+        <a class="navlink" href="/Class/List">Back To Classes</a>
+    </nav>
+    <h2>@Model.ClassName</h2>
+    <p>Class Code is @Model.ClassCode</p>
+    <p style="font-style:italic;">Start Date: @Model.ClassStartDate.ToString("dd-MMM-yyyy")</p>
+    <p style="font-style:italic;">Finish Date: @Model.ClassFinishDate.ToString("dd-MMM-yyyy")</p>
+    <p>Class is @Model.ClassName</p>
+    <p>Teacher is @Model.TeacherName</p>
+</div>
+

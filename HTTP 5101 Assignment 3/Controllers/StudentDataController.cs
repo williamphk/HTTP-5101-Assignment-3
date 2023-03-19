@@ -49,7 +49,7 @@ namespace HTTP_5101_Assignment_3.Controllers
             //Gather Result Set of Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
-            //Create an empty list of Teachers
+            //Create an empty list of Students
             List<Student> Students = new List<Student> { };
 
             //Loop Through Each Row the Result Set
@@ -61,14 +61,14 @@ namespace HTTP_5101_Assignment_3.Controllers
                 NewStudent.StudentFname = (string)ResultSet["studentfname"];
                 NewStudent.StudentLname = (string)ResultSet["studentlname"];
 
-                //Add the Teacher to the List
+                //Add the Student to the List
                 Students.Add(NewStudent);
             }
 
             //Close the connection between the MySQL Database and the WebServer
             Conn.Close();
 
-            //Return the final list of teacher
+            //Return the final list of student
             return Students;
         }
         /// <summary>
