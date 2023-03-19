@@ -21,7 +21,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// Returns a list of Teachers in the system
         /// </summary>
         /// <returns>
-        /// A list of Teacher Objects with fields mapped to the database column values (first name, last name, employee number, hire date, salary).
+        /// A list of Teacher Objects with fields mapped to the database column values (first name, last name).
         /// </returns>
         /// <example>
         /// GET api/TeacherData/ListTeachers -> {Teacher Object 1, Teacher Object 2, Teacher Object 3...}
@@ -63,8 +63,8 @@ namespace HTTP_5101_Assignment_3.Controllers
                 NewTeacher.TeacherFname = (string)ResultSet["teacherfname"];
                 NewTeacher.TeacherLname = (string)ResultSet["teacherlname"];
 
-            //Add the Teacher to the List
-            Teachers.Add(NewTeacher);
+                //Add the Teacher to the List
+                Teachers.Add(NewTeacher);
             }
 
             //Close the connection between the MySQL Database and the WebServer
@@ -117,6 +117,7 @@ namespace HTTP_5101_Assignment_3.Controllers
                 NewTeacher.TeacherHireDate = (DateTime)ResultSet["hiredate"];
                 NewTeacher.TeacherSalary = (decimal)ResultSet["salary"];
 
+                //If the value in column Classname is DBNull, set it to "null"
                 if (ResultSet.IsDBNull(ResultSet.GetOrdinal("classname")))
                 {
                     NewTeacher.ClassName = "null";
