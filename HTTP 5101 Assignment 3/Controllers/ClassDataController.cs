@@ -16,7 +16,7 @@ namespace HTTP_5101_Assignment_3.Controllers
 
         //This Controller will access the classs table of our school database. Non-Deterministic.
         /// <summary>
-        /// Returns a list of Classes in the system
+        /// Returns a list of Classes in the system matching the name
         /// </summary>
         /// <returns>
         /// A list of Class Objects with fields mapped to the database column values (first name, last name).

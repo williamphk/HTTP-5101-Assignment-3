@@ -18,7 +18,7 @@ namespace HTTP_5101_Assignment_3.Controllers
 
         //This Controller will access the teachers table of our school database. Non-Deterministic.
         /// <summary>
-        /// Returns a list of Teachers in the system
+        /// Returns a list of Teachers in the system matching the search criteria, such as name, salary and hire date 
         /// </summary>
         /// <returns>
         /// A list of Teacher Objects with fields mapped to the database column values (first name, last name).
@@ -28,7 +28,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// </example>
         [HttpGet]
         [Route("api/TeacherData/ListTeachers/{MinSalary}/{MaxSalary}/{SearchKey?}")]
-        public IEnumerable<Teacher> ListTeachers(int? MinSalary, int? MaxSalary, string SearchKey = null)
+        public IEnumerable<Teacher> ListTeachers(int? MinSalary, int? MaxSalary, DateTime? HireAfter, DateTime? HireBefore, string SearchKey = null)
         {
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -53,6 +53,16 @@ namespace HTTP_5101_Assignment_3.Controllers
             {
                 cmd.CommandText += " AND salary <= @MaxSalary";
                 cmd.Parameters.AddWithValue("@MaxSalary", MaxSalary);
+            }
+            if (HireAfter.HasValue)
+            {
+                cmd.CommandText += " AND hiredate >= @HireAfter";
+                cmd.Parameters.AddWithValue("@HireAfter", HireAfter);
+            }
+            if (HireBefore.HasValue)
+            {
+                cmd.CommandText += " AND hiredate <= @HireBefore";
+                cmd.Parameters.AddWithValue("@HireBefore", HireBefore);
             }
             cmd.Parameters.AddWithValue("@key", "%" + SearchKey + "%");
             cmd.Prepare();

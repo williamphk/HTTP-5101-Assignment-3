@@ -6,18 +6,33 @@
 <div id="containerlist">
     <h2>List of Teachers</h2>
     <form action="/Teacher/List" method="GET">
-        <div>
+        <div class="form-group">
             <label for="SearchKey">Name:</label>
-            <input type="text" id="SearchKey" name="SearchKey" autocomplete="off" />
+            <input type="text" class="form-control" id="SearchKey" name="SearchKey" autocomplete="off" />
         </div>
-        <div>
-            <label for="MinSalary">Minimun salary:</label>
-            <input type="number" id="MinSalary" name="MinSalary" />
-            <label for="MaxSalary">Maximun salary:</label>
-            <input type="number" id="MaxSalary" name="MaxSalary" />
+        <div class="row">
+            <div class="form-group col">
+                <label for="MinSalary">Minimum salary:</label>
+                <input type="number" class="form-control" id="MinSalary" name="MinSalary" />
+            </div>
+            <div class="form-group col">
+                <label for="MaxSalary">Maximum salary:</label>
+                <input type="number" class="form-control" id="MaxSalary" name="MaxSalary" />
+            </div>
         </div>
-        <input type="submit" value="Search" />
+        <div class="row">
+            <div class="form-group col">
+                <label for="HireAfter">Hire after:</label>
+                <input type="date" class="form-control" id="HireAfter" name="HireAfter" />
+            </div>
+            <div class="form-group col">
+                <label for="HireBefore">Hire before:</label>
+                <input type="date" class="form-control" id="HireBefore" name="HireBefore" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
+
     @foreach (var teacher in Model)
     {
         <div class="listitem row">
