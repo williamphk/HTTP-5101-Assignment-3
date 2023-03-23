@@ -27,8 +27,8 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// GET api/TeacherData/ListTeachers -> {Teacher Object 1, Teacher Object 2, Teacher Object 3...}
         /// </example>
         [HttpGet]
-        [Route("api/TeacherData/ListTeachers/{SearchKey?}")]
-        public IEnumerable<Teacher> ListTeachers(string SearchKey = null)
+        [Route("api/TeacherData/ListTeachers/{MinSalary}/{MaxSalary}/{SearchKey?}")]
+        public IEnumerable<Teacher> ListTeachers(int? MinSalary, int? MaxSalary, string SearchKey = null)
         {
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -41,10 +41,19 @@ namespace HTTP_5101_Assignment_3.Controllers
 
             //SQL QUERY
             cmd.CommandText = "SELECT * FROM Teachers "
-                            + "WHERE LOWER(teacherfname) LIKE LOWER(@key) "
+                            + "WHERE (LOWER(teacherfname) LIKE LOWER(@key) "
                             + "OR LOWER(teacherlname) LIKE LOWER(@key) "
-                            + "OR LOWER(CONCAT(teacherfname, ' ', teacherlname)) LIKE LOWER(@key)";
-
+                            + "OR LOWER(CONCAT(teacherfname, ' ', teacherlname)) LIKE LOWER(@key))";
+            if (MinSalary.HasValue)
+            {
+                cmd.CommandText += " AND salary >= @MinSalary ";
+                cmd.Parameters.AddWithValue("@MinSalary", MinSalary);
+            }
+            if (MaxSalary.HasValue)
+            {
+                cmd.CommandText += " AND salary <= @MaxSalary";
+                cmd.Parameters.AddWithValue("@MaxSalary", MaxSalary);
+            }
             cmd.Parameters.AddWithValue("@key", "%" + SearchKey + "%");
             cmd.Prepare();
 

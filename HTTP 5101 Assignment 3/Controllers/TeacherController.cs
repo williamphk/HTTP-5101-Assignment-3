@@ -16,10 +16,10 @@ namespace HTTP_5101_Assignment_3.Controllers
         }
 
         //GET : /Teacher/List
-        public ActionResult List(string SearchKey = null)
+        public ActionResult List(int? MinSalary, int? MaxSalary, string SearchKey = null)
         {
             TeacherDataController controller = new TeacherDataController();
-            IEnumerable<Teacher> Teachers = controller.ListTeachers(SearchKey);
+            IEnumerable<Teacher> Teachers = controller.ListTeachers(MinSalary, MaxSalary, SearchKey);
 
             return View(Teachers);
         }

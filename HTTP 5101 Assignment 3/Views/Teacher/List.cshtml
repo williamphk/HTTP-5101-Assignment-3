@@ -6,7 +6,16 @@
 <div id="containerlist">
     <h2>List of Teachers</h2>
     <form action="/Teacher/List" method="GET">
-        <input type="text" name="SearchKey" autocomplete="off" />
+        <div>
+            <label for="SearchKey">Name:</label>
+            <input type="text" id="SearchKey" name="SearchKey" autocomplete="off" />
+        </div>
+        <div>
+            <label for="MinSalary">Minimun salary:</label>
+            <input type="number" id="MinSalary" name="MinSalary" />
+            <label for="MaxSalary">Maximun salary:</label>
+            <input type="number" id="MaxSalary" name="MaxSalary" />
+        </div>
         <input type="submit" value="Search" />
     </form>
     @foreach (var teacher in Model)
