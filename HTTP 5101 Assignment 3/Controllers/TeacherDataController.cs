@@ -104,7 +104,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         [Route("api/TeacherData/FindTeacher/{id}")]
         public Teacher FindTeacher(int id)
         {
-            Teacher NewTeacher = new Teacher();
+            List<Teacher> NewTeachers = new List<Teacher> { };
 
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -128,6 +128,7 @@ namespace HTTP_5101_Assignment_3.Controllers
 
             while (ResultSet.Read())
             {
+                Teacher NewTeacher = new Teacher();
                 //Access Column information by the DB column name as an index
                 NewTeacher.TeacherId = Convert.ToInt32(ResultSet["teacherid"]);
                 NewTeacher.TeacherFname = (string)ResultSet["teacherfname"];
@@ -144,10 +145,33 @@ namespace HTTP_5101_Assignment_3.Controllers
                 {
                     NewTeacher.ClassName = (string)ResultSet["classname"];
                 }
+                //Add the Teacher to the List
+                NewTeachers.Add(NewTeacher);
             }
+
+            Teacher Teacher = new Teacher();
+
+            Teacher.TeacherId = NewTeachers[0].TeacherId;
+            Teacher.TeacherFname = NewTeachers[0].TeacherLname;
+            Teacher.TeacherLname = NewTeachers[0].TeacherFname;
+            Teacher.TeacherEmployeeNumber = NewTeachers[0].TeacherEmployeeNumber;
+            Teacher.TeacherHireDate = NewTeachers[0].TeacherHireDate;
+            Teacher.TeacherSalary = NewTeachers[0].TeacherSalary;
+            Teacher.ClassName = NewTeachers[0].ClassName;
+
+            // when there is a teacher teaching two classes
+            if (NewTeachers.Count > 1)
+            {
+                for ( int i = 1; i < NewTeachers.Count; i++ )
+                {
+                    Teacher.ClassName += ", " +NewTeachers[i].ClassName;
+                }
+
+            }
+
             Conn.Close();
 
-            return NewTeacher;
+            return Teacher;
         }
     }
 }
