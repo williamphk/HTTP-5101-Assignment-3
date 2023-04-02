@@ -188,15 +188,24 @@ namespace HTTP_5101_Assignment_3.Controllers
             //Open the connection between the web server and database
             Conn.Open();
 
-            //Establish a new command (query) for our database
-            MySqlCommand cmd = Conn.CreateCommand();
+            //Establish a command (query) for teacher table
+            MySqlCommand DeleteTeacherCmd = Conn.CreateCommand();
 
-            //SQL QUERY
-            cmd.CommandText = "Delete from teachers where teacherid=@id";
-            cmd.Parameters.AddWithValue("@id", id);
-            cmd.Prepare();
+            //Delete teacher
+            DeleteTeacherCmd.CommandText = "Delete from teachers where teacherid=@id";
+            DeleteTeacherCmd.Parameters.AddWithValue("@id", id);
+            DeleteTeacherCmd.Prepare();
+            DeleteTeacherCmd.ExecuteNonQuery();
 
-            cmd.ExecuteNonQuery();
+            //Maintain referential integrity by deleting any courses in the classes pointing to the deleted teacher
+            //Establish a command (query) for class table
+            MySqlCommand DeleteClassCmd = Conn.CreateCommand();
+
+            //Delete rows in the Classes table that reference the teacher
+            DeleteClassCmd.CommandText = "DELETE FROM Classes WHERE teacherid = @id";
+            DeleteClassCmd.Parameters.AddWithValue("@id", id);
+            DeleteClassCmd.Prepare();
+            DeleteClassCmd.ExecuteNonQuery();
 
             Conn.Close();
         }
