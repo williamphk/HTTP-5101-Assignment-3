@@ -219,6 +219,9 @@ namespace HTTP_5101_Assignment_3.Controllers
         [Route("api/api/TeacherData/AddTeacher/{id}")]
         public void AddTeacher([FromBody] Teacher NewTeacher)
         {
+            //Exit method if the input fields are invalid.
+            if (!NewTeacher.IsValid()) return;
+
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
 

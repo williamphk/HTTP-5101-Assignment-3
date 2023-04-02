@@ -10,7 +10,7 @@
     </nav>
     <h2>@Model.TeacherFname @Model.TeacherLname</h2>
     <p>Employee Number: @Model.TeacherEmployeeNumber</p>
-    <p style="font-style:italic;">Hired Since @Model.TeacherHireDate.ToString("dd-MMM-yyyy")</p>
+    <p style="font-style:italic;">Hired Since @(Model.TeacherHireDate.HasValue ? Model.TeacherHireDate.Value.ToString("dd-MMM-yyyy") : "N/A")</p>
     <p>Salary: @Model.TeacherSalary</p>
     <p>Class: @Model.ClassName</p>
 </div>

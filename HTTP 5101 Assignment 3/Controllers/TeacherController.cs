@@ -59,7 +59,7 @@ namespace HTTP_5101_Assignment_3.Controllers
 
         //POST : /Teacher/Create
         [HttpPost]
-        public ActionResult Create(string TeacherFname, string TeacherLname, string TeacherEmployeeNumber, DateTime TeacherHireDate, decimal TeacherSalary)
+        public ActionResult Create(string TeacherFname, string TeacherLname, string TeacherEmployeeNumber, DateTime? TeacherHireDate, decimal? TeacherSalary)
         {
             Teacher NewTeacher = new Teacher();
             NewTeacher.TeacherFname = TeacherFname;
