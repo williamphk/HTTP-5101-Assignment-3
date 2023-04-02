@@ -9,35 +9,36 @@
         <a class="navlink" href="/Teacher/List">Back To Teachers</a>
     </nav>
     <h2>New Teacher</h2>
-    <form method="POST" action="/Teacher/Create">
+    <form method="POST" action="/Teacher/Create"  onsubmit="return ValidateTeacher();">
         <div class="inputrow">
             <label for="TeacherFname">First Name:</label>
-            <input type="text" id="TeacherFname" name="TeacherFname" required/>
+            <input type="text" id="TeacherFname" name="TeacherFname" required />
 
         </div>
         <div class="inputrow">
             <label for="TeacherLname">Last Name:</label>
-            <input type="text" id="TeacherLname" name="TeacherLname" required/>
+            <input type="text" id="TeacherLname" name="TeacherLname" required />
 
         </div>
         <div class="inputrow">
             <label for="TeacherEmployeeNumber">Employee Number:</label>
-            <input type="text" id="TeacherEmployeeNumber" name="TeacherEmployeeNumber" required/>
+            <input type="text" id="TeacherEmployeeNumber" name="TeacherEmployeeNumber" required />
         </div>
         <div class="inputrow">
             <label for="TeacherHireDate">Hire Date:</label>
             <div>
-                <input type="date" id="TeacherHireDate" name="TeacherHireDate" required/>
+                <input type="date" id="TeacherHireDate" name="TeacherHireDate" required />
             </div>
         </div>
         <div class="inputrow">
             <label for="TeacherSalary">Salary:</label>
             <div>
-                <input type="number" step="0.01" id="TeacherSalary" name="TeacherSalary" required/>
+                <input type="number" step="0.01" id="TeacherSalary" name="TeacherSalary" required />
             </div>
         </div>
         <div class="inputrow">
             <input type="submit" value="Create Teacher" />
         </div>
+        <div id="ErrorBox" style="display:none;"></div>
     </form>
 </div>
