@@ -12,28 +12,28 @@
     <form method="POST" action="/Teacher/Create">
         <div class="inputrow">
             <label for="TeacherFname">First Name:</label>
-            <input type="text" id="TeacherFname" name="TeacherFname" />
+            <input type="text" id="TeacherFname" name="TeacherFname" required/>
 
         </div>
         <div class="inputrow">
             <label for="TeacherLname">Last Name:</label>
-            <input type="text" id="TeacherLname" name="TeacherLname" />
+            <input type="text" id="TeacherLname" name="TeacherLname" required/>
 
         </div>
         <div class="inputrow">
             <label for="TeacherEmployeeNumber">Employee Number:</label>
-            <input type="text" id="TeacherEmployeeNumber" name="TeacherEmployeeNumber" />
+            <input type="text" id="TeacherEmployeeNumber" name="TeacherEmployeeNumber" required/>
         </div>
         <div class="inputrow">
             <label for="TeacherHireDate">Hire Date:</label>
             <div>
-                <input type="date" id="TeacherHireDate" name="TeacherHireDate" />
+                <input type="date" id="TeacherHireDate" name="TeacherHireDate" required/>
             </div>
         </div>
         <div class="inputrow">
             <label for="TeacherSalary">Salary:</label>
             <div>
-                <input type="number" id="TeacherSalary" name="TeacherSalary" />
+                <input type="number" step="0.01" id="TeacherSalary" name="TeacherSalary" required/>
             </div>
         </div>
         <div class="inputrow">
