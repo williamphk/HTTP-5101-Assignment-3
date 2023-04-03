@@ -5,9 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Remoting.Messaging;
+using System.Web;
 using System.Web.Http;
 using HTTP_5101_Assignment_3.Models;
 using MySql.Data.MySqlClient;
+using System.Web.Http.Cors;
 
 namespace HTTP_5101_Assignment_3.Controllers
 {
@@ -180,6 +182,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// <param name="id">The ID of the teacher.</param>
         /// <example>POST /api/TeacherData/DeleteTeacher/3</example>
         [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public void DeleteTeacher(int id)
         {
             //Create an instance of a connection
@@ -225,7 +228,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// }
         /// </example>
         [HttpPost]
-        [Route("api/api/TeacherData/AddTeacher/{id}")]
+        [EnableCors(origins:"*", methods:"*", headers:"*")]
         public void AddTeacher([FromBody] Teacher NewTeacher)
         {
             //Exit method if the input fields are invalid.

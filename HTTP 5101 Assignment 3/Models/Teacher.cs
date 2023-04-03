@@ -18,7 +18,7 @@ namespace HTTP_5101_Assignment_3.Models
         //Server side validation
         public bool IsValid()
         {
-            if (TeacherFname == null || TeacherLname == null || TeacherEmployeeNumber == null || TeacherHireDate == null || TeacherSalary == null)
+            if (string.IsNullOrEmpty(TeacherFname) || string.IsNullOrEmpty(TeacherLname) || string.IsNullOrEmpty(TeacherEmployeeNumber) || !TeacherHireDate.HasValue || !TeacherSalary.HasValue)
             {
                 //Base validation to check if the fields are entered.
                 return false;
