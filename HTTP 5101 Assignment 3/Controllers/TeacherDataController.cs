@@ -177,7 +177,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         }
 
         /// <summary>
-        /// Deletes an Teacher from the connected MySQL Database if the ID of that teacher exists. Does NOT maintain relational integrity. Non-Deterministic.
+        /// Deletes an Teacher from the connected MySQL Database if the ID of that teacher exists. Does maintain relational integrity. Non-Deterministic.
         /// </summary>
         /// <param name="id">The ID of the teacher.</param>
         /// <example>POST /api/TeacherData/DeleteTeacher/3</example>
@@ -217,22 +217,33 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// Adds an Teacher to the MySQL Database.
         /// </summary>
         /// <param name="NewTeacher">An object with fields that map to the columns of the teacher's table. Non-Deterministic.</param>
+        /// <returns>
+        /// Two cases
+        /// "The create was unsuccessful due to incomplete data"
+        /// "The create was successful"
+        /// </returns>
         /// <example>
         /// POST api/TeacherData/AddTeacher 
         /// FORM DATA / POST DATA / REQUEST BODY 
         /// {
-        ///	"TeacherFname":"Christine",
-        ///	"TeacherLname":"Bittle",
-        ///	"TeacherBio":"Likes Coding!",
-        ///	"TeacherEmail":"christine@test.ca"
+        ///	"TeacherFname":"William",
+        ///	"TeacherLname":"Poon",
+        ///	"TeacherEmployeeNumber":"T567",
+        ///	"TeacherHireDate":"2023-11-22",
+        ///	"TeacherSalary":"52.22"
         /// }
         /// </example>
         [HttpPost]
         [EnableCors(origins:"*", methods:"*", headers:"*")]
-        public void AddTeacher([FromBody] Teacher NewTeacher)
+        public string AddTeacher([FromBody] Teacher NewTeacher)
         {
+            string Output;
             //Exit method if the input fields are invalid.
-            if (!NewTeacher.IsValid()) return;
+            if (!NewTeacher.IsValid())
+            {
+                Output = "The create was unsuccessful due to incomplete data";
+                return Output;
+            }
 
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -256,6 +267,8 @@ namespace HTTP_5101_Assignment_3.Controllers
             cmd.ExecuteNonQuery();
 
             Conn.Close();
+            Output = "The create was successful";
+            return Output;
         }
     }
 }

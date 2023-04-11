@@ -69,9 +69,11 @@ namespace HTTP_5101_Assignment_3.Controllers
             NewTeacher.TeacherSalary = TeacherSalary;
 
             TeacherDataController controller = new TeacherDataController();
-            controller.AddTeacher(NewTeacher);
 
-            return RedirectToAction("List");
+            //return RedirectToAction("List");
+
+            ViewBag.Temp = controller.AddTeacher(NewTeacher);
+            return View("New");
         }
     }
 }
