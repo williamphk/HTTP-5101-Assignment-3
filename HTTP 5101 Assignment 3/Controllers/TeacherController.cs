@@ -75,5 +75,29 @@ namespace HTTP_5101_Assignment_3.Controllers
             ViewBag.Temp = controller.AddTeacher(NewTeacher);
             return View("New");
         }
+
+        //GET: /Teacher/Update
+        public ActionResult Update(int id)
+        {
+            TeacherDataController controller = new TeacherDataController();
+            Teacher SelectedTeacher = controller.FindTeacher(id);
+            return View(SelectedTeacher);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, string TeacherFname, string TeacherLname, string TeacherEmployeeNumber, DateTime? TeacherHireDate, decimal? TeacherSalary)
+        {
+            Teacher UpdatedTeacher = new Teacher();
+            UpdatedTeacher.TeacherFname = TeacherFname;
+            UpdatedTeacher.TeacherLname = TeacherLname;
+            UpdatedTeacher.TeacherEmployeeNumber = TeacherEmployeeNumber;
+            UpdatedTeacher.TeacherHireDate = TeacherHireDate;
+            UpdatedTeacher.TeacherSalary = TeacherSalary;
+
+            TeacherDataController controller = new TeacherDataController();
+            controller.UpdateTeacher(id, UpdatedTeacher);
+
+            return RedirectToAction("Show/" + id);
+        }
     }
 }

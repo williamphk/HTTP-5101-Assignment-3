@@ -270,5 +270,48 @@ namespace HTTP_5101_Assignment_3.Controllers
             Output = "The create was successful";
             return Output;
         }
+
+        /// <summary>
+        /// Updates an Teacher on the MySQL Database. Non-Deterministic.
+        /// </summary>
+        /// <param name="UpdatedTeacher">An object with fields that map to the columns of the teacher's table.</param>
+        /// <example>
+        /// POST api/TeacherData/UpdateTeacher/2 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"TeacherFname":"William",
+        ///	"TeacherLname":"Poon",
+        ///	"TeacherEmployeeNumber":"T567",
+        ///	"TeacherHireDate":"2023-11-22",
+        ///	"TeacherSalary":"52.22"
+        /// }
+        /// </example>
+        [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
+        public void UpdateTeacher(int id, [FromBody]Teacher UpdatedTeacher)
+        {
+            MySqlConnection Conn = School.AccessDatabase();
+            Conn.Open();
+
+            MySqlCommand Cmd = Conn.CreateCommand();
+
+            Cmd.CommandText = "UPDATE teachers SET teacherfname = @TeacherFname, "
+                            + "teacherlname = @TeacherLname, "
+                            + "employeenumber = @TeacherEmployeeNumber, "
+                            + "hiredate = @TeacherHireDate, "
+                            + "salary = @TeacherSalary "
+                            + "WHERE teacherid = @TeacherId";
+
+            Cmd.Parameters.AddWithValue("@TeacherFname", UpdatedTeacher.TeacherFname);
+            Cmd.Parameters.AddWithValue("@TeacherLname", UpdatedTeacher.TeacherLname);
+            Cmd.Parameters.AddWithValue("@TeacherEmployeeNumber", UpdatedTeacher.TeacherEmployeeNumber);
+            Cmd.Parameters.AddWithValue("@TeacherHireDate", UpdatedTeacher.TeacherHireDate);
+            Cmd.Parameters.AddWithValue("@TeacherSalary", UpdatedTeacher.TeacherSalary);
+            Cmd.Parameters.AddWithValue("@TeacherId", id);
+            Cmd.Prepare();
+            Cmd.ExecuteNonQuery();
+
+            Conn.Close();
+        }
     }
 }

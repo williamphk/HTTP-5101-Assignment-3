@@ -12,6 +12,13 @@ namespace HTTP_5101_Assignment_3.Models
         public string TeacherLname;
         public string TeacherEmployeeNumber;
         public DateTime? TeacherHireDate;
+        public string FormattedHireDate
+        {
+            get
+            {
+                return TeacherHireDate.HasValue ? TeacherHireDate.Value.ToString("yyyy-MM-dd") : "";
+            }
+        }
         public decimal? TeacherSalary;
         public string ClassName;
 
