@@ -275,6 +275,10 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// Updates an Teacher on the MySQL Database. Non-Deterministic.
         /// </summary>
         /// <param name="UpdatedTeacher">An object with fields that map to the columns of the teacher's table.</param>
+        /// <returns>
+        /// True if the update was unsuccessful due to incomplete data
+        /// False if the update was successful
+        /// </returns>
         /// <example>
         /// POST api/TeacherData/UpdateTeacher/2 
         /// FORM DATA / POST DATA / REQUEST BODY 
@@ -288,8 +292,16 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// </example>
         [HttpPost]
         [EnableCors(origins: "*", methods: "*", headers: "*")]
-        public void UpdateTeacher(int id, [FromBody]Teacher UpdatedTeacher)
+        public Boolean UpdateTeacher(int id, [FromBody]Teacher UpdatedTeacher)
         {
+
+            //Exit method if the input fields are invalid.
+            if (!UpdatedTeacher.IsValid())
+            {
+
+                return false;
+            }
+
             MySqlConnection Conn = School.AccessDatabase();
             Conn.Open();
 
@@ -312,6 +324,8 @@ namespace HTTP_5101_Assignment_3.Controllers
             Cmd.ExecuteNonQuery();
 
             Conn.Close();
+
+            return true;
         }
     }
 }

@@ -88,6 +88,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         public ActionResult Edit(int id, string TeacherFname, string TeacherLname, string TeacherEmployeeNumber, DateTime? TeacherHireDate, decimal? TeacherSalary)
         {
             Teacher UpdatedTeacher = new Teacher();
+            UpdatedTeacher.TeacherId = id;
             UpdatedTeacher.TeacherFname = TeacherFname;
             UpdatedTeacher.TeacherLname = TeacherLname;
             UpdatedTeacher.TeacherEmployeeNumber = TeacherEmployeeNumber;
@@ -95,9 +96,15 @@ namespace HTTP_5101_Assignment_3.Controllers
             UpdatedTeacher.TeacherSalary = TeacherSalary;
 
             TeacherDataController controller = new TeacherDataController();
-            controller.UpdateTeacher(id, UpdatedTeacher);
-
-            return RedirectToAction("Show/" + id);
+            if (controller.UpdateTeacher(id, UpdatedTeacher) == true)
+            {
+                return RedirectToAction("Show/" + id);
+            }
+            else
+            {
+                ViewBag.Update = "The update was unsuccessful due to incomplete data";
+                return View("Update", UpdatedTeacher);
+            }
         }
     }
 }
