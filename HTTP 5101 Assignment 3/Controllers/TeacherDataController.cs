@@ -104,6 +104,7 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// <example>api/TeacherData/FindTeacher/10 -> {Teacher Object with TeacherId 10}</example>
         [HttpGet]
         [Route("api/TeacherData/FindTeacher/{id}")]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public Teacher FindTeacher(int id)
         {
             List<Teacher> NewTeachers = new List<Teacher> { };
@@ -154,8 +155,8 @@ namespace HTTP_5101_Assignment_3.Controllers
             Teacher Teacher = new Teacher();
 
             Teacher.TeacherId = NewTeachers[0].TeacherId;
-            Teacher.TeacherFname = NewTeachers[0].TeacherLname;
-            Teacher.TeacherLname = NewTeachers[0].TeacherFname;
+            Teacher.TeacherFname = NewTeachers[0].TeacherFname;
+            Teacher.TeacherLname = NewTeachers[0].TeacherLname;
             Teacher.TeacherEmployeeNumber = NewTeachers[0].TeacherEmployeeNumber;
             Teacher.TeacherHireDate = NewTeachers[0].TeacherHireDate;
             Teacher.TeacherSalary = NewTeachers[0].TeacherSalary;
