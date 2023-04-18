@@ -293,14 +293,16 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// </example>
         [HttpPost]
         [EnableCors(origins: "*", methods: "*", headers: "*")]
-        public Boolean UpdateTeacher(int id, [FromBody]Teacher UpdatedTeacher)
+        public ApiResult UpdateTeacher(int id, [FromBody]Teacher UpdatedTeacher)
         {
+            ApiResult ApiResult = new ApiResult();
 
             //Exit method if the input fields are invalid.
             if (!UpdatedTeacher.IsValid())
             {
-
-                return false;
+                ApiResult.Success = false;
+                ApiResult.ErrorMsg = "The update was unsuccessful due to incomplete data";
+                return ApiResult;
             }
 
             MySqlConnection Conn = School.AccessDatabase();
@@ -326,7 +328,9 @@ namespace HTTP_5101_Assignment_3.Controllers
 
             Conn.Close();
 
-            return true;
+            ApiResult.Success = true;
+            ApiResult.TeacherId = id;
+            return ApiResult;
         }
     }
 }

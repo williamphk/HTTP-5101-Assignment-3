@@ -26,7 +26,7 @@
         <div class="inputrow">
             <label for="TeacherHireDate">Hire Date:</label>
             <input type="date" id="TeacherHireDate" name="TeacherHireDate" value="@Model.FormattedHireDate" required />
-            
+
         </div>
         <div class="inputrow">
             <label for="TeacherSalary">Salary:</label>
@@ -35,6 +35,6 @@
         <div class="inputrow">
             <input type="submit" value="Update Teacher" />
         </div>
-        <div id="ErrorBox">@ViewBag.Update</div>
+        <div id="ErrorBox">@ViewBag.ErrorMsg</div>
     </form>
 </div>

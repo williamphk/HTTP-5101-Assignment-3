@@ -96,13 +96,14 @@ namespace HTTP_5101_Assignment_3.Controllers
             UpdatedTeacher.TeacherSalary = TeacherSalary;
 
             TeacherDataController controller = new TeacherDataController();
-            if (controller.UpdateTeacher(id, UpdatedTeacher) == true)
+            ApiResult apiResult = controller.UpdateTeacher(id, UpdatedTeacher);
+            if (apiResult.Success == true)
             {
-                return RedirectToAction("Show/" + id);
+                return RedirectToAction("Show/" + apiResult.TeacherId);
             }
             else
             {
-                ViewBag.Update = "The update was unsuccessful due to incomplete data";
+                ViewBag.ErrorMsg = apiResult.ErrorMsg;
                 return View("Update", UpdatedTeacher);
             }
         }
