@@ -219,9 +219,9 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// </summary>
         /// <param name="NewTeacher">An object with fields that map to the columns of the teacher's table. Non-Deterministic.</param>
         /// <returns>
-        /// Two cases
-        /// "The create was unsuccessful due to incomplete data"
-        /// "The create was successful"
+        /// Returns a object of ApiResult
+        /// If the update was successful, the ApiResult object will include the created Teacher's TeacherId
+        /// If the update was unsuccessful, the ApiResult object will include a Error Message
         /// </returns>
         /// <example>
         /// POST api/TeacherData/AddTeacher 
@@ -236,14 +236,15 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// </example>
         [HttpPost]
         [EnableCors(origins:"*", methods:"*", headers:"*")]
-        public string AddTeacher([FromBody] Teacher NewTeacher)
+        public ApiResult AddTeacher([FromBody] Teacher NewTeacher)
         {
-            string Output;
+            ApiResult ApiResult = new ApiResult();
             //Exit method if the input fields are invalid.
             if (!NewTeacher.IsValid())
             {
-                Output = "The create was unsuccessful due to incomplete data";
-                return Output;
+                ApiResult.Success = false;
+                ApiResult.ErrorMsg = "The create was unsuccessful due to incomplete data";
+                return ApiResult;
             }
 
             //Create an instance of a connection
@@ -257,19 +258,23 @@ namespace HTTP_5101_Assignment_3.Controllers
 
             //SQL QUERY
             cmd.CommandText = "INSERT INTO teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) "
-                            + "values (@TeacherFname,@TeacherLname,@TeacherEmployeeNumber,CURRENT_DATE(),@TeacherSalary)";
+                            + "values (@TeacherFname,@TeacherLname,@TeacherEmployeeNumber,CURRENT_DATE(),@TeacherSalary);"
+                            + "SELECT LAST_INSERT_ID();";
             cmd.Parameters.AddWithValue("@TeacherFname", NewTeacher.TeacherFname);
             cmd.Parameters.AddWithValue("@TeacherLname", NewTeacher.TeacherLname);
             cmd.Parameters.AddWithValue("@TeacherEmployeeNumber", NewTeacher.TeacherEmployeeNumber);
             cmd.Parameters.AddWithValue("@TeacherHireDate", NewTeacher.TeacherHireDate);
             cmd.Parameters.AddWithValue("@TeacherSalary", NewTeacher.TeacherSalary);
-            cmd.Prepare();
-
             cmd.ExecuteNonQuery();
 
+            // Get the inserted ID
+            cmd.CommandText = "SELECT LAST_INSERT_ID();";
+            int newTeacherId = Convert.ToInt32(cmd.ExecuteScalar());
+
             Conn.Close();
-            Output = "The create was successful";
-            return Output;
+            ApiResult.Success = true;
+            ApiResult.TeacherId = newTeacherId;
+            return ApiResult;
         }
 
         /// <summary>
@@ -277,8 +282,9 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// </summary>
         /// <param name="UpdatedTeacher">An object with fields that map to the columns of the teacher's table.</param>
         /// <returns>
-        /// True if the update was unsuccessful due to incomplete data
-        /// False if the update was successful
+        /// Returns a object of ApiResult
+        /// If the update was successful, the ApiResult object will include the selected Teacher's TeacherId
+        /// If the update was unsuccessful, the ApiResult object will include a Error Message
         /// </returns>
         /// <example>
         /// POST api/TeacherData/UpdateTeacher/2 

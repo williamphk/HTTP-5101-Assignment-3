@@ -72,8 +72,16 @@ namespace HTTP_5101_Assignment_3.Controllers
 
             //return RedirectToAction("List");
 
-            ViewBag.Temp = controller.AddTeacher(NewTeacher);
-            return View("New");
+            ApiResult apiResult = controller.AddTeacher(NewTeacher);
+            if (apiResult.Success == true)
+            {
+                return RedirectToAction("Show/" + apiResult.TeacherId);
+            }
+            else
+            {
+                ViewBag.ErrorMsg = apiResult.ErrorMsg;
+                return View("New");
+            }
         }
 
         //GET: /Teacher/Update
