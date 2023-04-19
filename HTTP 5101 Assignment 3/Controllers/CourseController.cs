@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace HTTP_5101_Assignment_3.Controllers
 {
-    public class ClassController : Controller
+    public class CourseController : Controller
     {
         // GET: Class
         public ActionResult Index()
@@ -18,8 +18,8 @@ namespace HTTP_5101_Assignment_3.Controllers
         //GET : /Class/List
         public ActionResult List(string SearchKey = null)
         {
-            ClassDataController controller = new ClassDataController();
-            IEnumerable<Class> Classes = controller.ListClasses(SearchKey);
+            CourseDataController controller = new CourseDataController();
+            IEnumerable<Course> Classes = controller.ListCourses();
 
             return View(Classes);
         }
@@ -27,8 +27,8 @@ namespace HTTP_5101_Assignment_3.Controllers
         //GET : /Class/Show/{id}
         public ActionResult Show(int id)
         {
-            ClassDataController controller = new ClassDataController();
-            Class NewClass = controller.FindClass(id);
+            CourseDataController controller = new CourseDataController();
+            Course NewClass = controller.FindClass(id);
 
             return View(NewClass);
         }

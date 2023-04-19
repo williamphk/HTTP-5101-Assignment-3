@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using HTTP_5101_Assignment_3.Models;
+using HTTP_5101_Assignment_3.Models.ViewModel;
 
 namespace HTTP_5101_Assignment_3.Controllers
 {
@@ -28,10 +29,16 @@ namespace HTTP_5101_Assignment_3.Controllers
         //GET : /Teacher/Show/{id}
         public ActionResult Show(int id)
         {
+            ShowTeacher ViewModel = new ShowTeacher();
             TeacherDataController controller = new TeacherDataController();
-            Teacher NewTeacher = controller.FindTeacher(id);
+            Teacher SelectedTeacher = controller.FindTeacher(id);
 
-            return View(NewTeacher);
+            CourseDataController courseController = new CourseDataController();
+
+            ViewModel.SelectedTeacher = SelectedTeacher;
+            ViewModel.AssociatedCourses = courseController.ListCoursesForTeacher(id);
+
+            return View(ViewModel);
         }
 
         //GET : /Teacher/DeleteConfirm/{id}

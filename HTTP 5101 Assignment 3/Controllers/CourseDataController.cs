@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace HTTP_5101_Assignment_3.Controllers
 {
-    public class ClassDataController : ApiController
+    public class CourseDataController : ApiController
     {
         // The database context class which allows us to access our MySQL Database.
         private SchoolDbContext School = new SchoolDbContext();
@@ -25,8 +25,8 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// GET api/ClassData/ListClasses -> {Class Object 1, Class Object 2, Class Object 3...}
         /// </example>
         [HttpGet]
-        [Route("api/ClassData/ListClasses/{SearchKey?}")]
-        public IEnumerable<Class> ListClasses(string SearchKey = null)
+        [Route("api/CourseData/ListCourses/{SearchKey?}")]
+        public IEnumerable<Course> ListCourses(string SearchKey = null)
         {
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -48,15 +48,15 @@ namespace HTTP_5101_Assignment_3.Controllers
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
             //Create an empty list of Classes
-            List<Class> Classes = new List<Class> { };
+            List<Course> Classes = new List<Course> { };
 
             //Loop Through Each Row the Result Set
             while (ResultSet.Read())
             {
                 //Access Column information by the DB column name as an index
-                Class NewClass = new Class();
-                NewClass.ClassId = Convert.ToInt32(ResultSet["classid"]);
-                NewClass.ClassName = (string)ResultSet["classname"];
+                Course NewClass = new Course();
+                NewClass.CourseId = Convert.ToInt32(ResultSet["classid"]);
+                NewClass.CourseName = (string)ResultSet["classname"];
 
                 //Add the Class to the List
                 Classes.Add(NewClass);
@@ -68,6 +68,43 @@ namespace HTTP_5101_Assignment_3.Controllers
             //Return the final list of class
             return Classes;
         }
+
+        [HttpGet]
+        [Route("api/CourseData/ListCoursesForTeacher/{teacherid}")]
+        public IEnumerable<Course> ListCoursesForTeacher(int teacherid) 
+        {
+            //create MySqlconnection
+            MySqlConnection Conn = School.AccessDatabase();
+
+            //open connection
+            Conn.Open();
+
+            //MySqlCommand
+
+            MySqlCommand Cmd = Conn.CreateCommand();
+
+            string query = "SELECT classes.* FROM `classes` WHERE teacherid = @teacherid";
+
+            Cmd.CommandText = query;
+            Cmd.Parameters.AddWithValue("@teacherid", teacherid);
+            Cmd.Prepare();
+
+            MySqlDataReader ResultSet = Cmd.ExecuteReader();
+
+            List<Course> Courses = new List<Course>();
+
+            while (ResultSet.Read())
+            {
+                Course NewCourse = new Course();
+                NewCourse.CourseId = Convert.ToInt32(ResultSet["classid"]);
+                NewCourse.CourseCode = ResultSet["classcode"].ToString();
+                NewCourse.CourseName = ResultSet["classname"].ToString();
+
+                Courses.Add(NewCourse);
+            }
+            return Courses;
+        }
+
         /// <summary>
         /// Finds an Class from the MySQL Database through an id. Non-Deterministic.
         /// </summary>
@@ -77,9 +114,9 @@ namespace HTTP_5101_Assignment_3.Controllers
         /// <example>api/ClassData/FindClass/10 -> {Class Object with ClassId 10}</example>
         [HttpGet]
         [Route("api/ClassData/FindClass/{id}")]
-        public Class FindClass(int id)
+        public Course FindClass(int id)
         {
-            Class NewClass = new Class();
+            Course NewClass = new Course();
 
             //Create an instance of a connection
             MySqlConnection Conn = School.AccessDatabase();
@@ -104,12 +141,12 @@ namespace HTTP_5101_Assignment_3.Controllers
             while (ResultSet.Read())
             {
                 //Access Column information by the DB column name as an index
-                NewClass.ClassId = Convert.ToInt32(ResultSet["classid"]);
-                NewClass.ClassCode = (string)ResultSet["classcode"];
+                NewClass.CourseId = Convert.ToInt32(ResultSet["classid"]);
+                NewClass.CourseCode = (string)ResultSet["classcode"];
                 NewClass.TeacherId = Convert.ToInt32(ResultSet["teacherid"]);
-                NewClass.ClassStartDate = (DateTime)ResultSet["startdate"];
-                NewClass.ClassFinishDate = (DateTime)ResultSet["finishdate"];
-                NewClass.ClassName = (string)ResultSet["classname"];
+                NewClass.CourseStartDate = (DateTime)ResultSet["startdate"];
+                NewClass.CourseFinishDate = (DateTime)ResultSet["finishdate"];
+                NewClass.CourseName = (string)ResultSet["classname"];
                 NewClass.TeacherName = (string)ResultSet["teacherfname"] + " " + (string)ResultSet["teacherlname"];
             }
             Conn.Close();

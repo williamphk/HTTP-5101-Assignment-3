@@ -173,8 +173,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\ClassController.cs" />
-    <Compile Include="Controllers\ClassDataController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\CourseDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\StudentDataController.cs" />
@@ -184,7 +184,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiResult.cs" />
-    <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\ViewModel\ShowTeacher.cs" />
     <Compile Include="Models\SchoolDbContext.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Teacher.cs" />
