@@ -13,10 +13,33 @@
     <p>Employee Number: @Model.SelectedTeacher.TeacherEmployeeNumber</p>
     <p style="font-style:italic;">Hired Since @(Model.SelectedTeacher.TeacherHireDate.HasValue ? Model.SelectedTeacher.TeacherHireDate.Value.ToString("dd-MMM-yyyy") : "N/A")</p>
     <p>Salary: @Model.SelectedTeacher.TeacherSalary</p>
-    <p>Class: </p>
+    <p>Class taught: </p>
     @foreach (var Course in @Model.AssociatedCourses)
-            {
-                <p>@Course.CourseCode @Course.CourseName</p>
-            }
+    {
+        <div>
+            <span>@Course.CourseCode @Course.CourseName</span>
+            <form method="POST" action="/Teacher/RemoveCourse/@Model.SelectedTeacher.TeacherId">
+                <input type="hidden" name="teacherid" value="@Model.SelectedTeacher.TeacherId" />
+                <input type="hidden" name="classid" value="@Course.CourseId" />
+                <button class="delbutton">
+                    X
+                </button>
+            </form>
+        </div>
+    }
+    <p>Unassigned class: </p>
+    @foreach (var Course in @Model.UnassignedCourses)
+    {
+        <div>
+            <span>@Course.CourseCode @Course.CourseName</span>
+            <form method="POST" action="/Teacher/AddCourse/@Model.SelectedTeacher.TeacherId">
+                <input type="hidden" name="teacherid" value="@Model.SelectedTeacher.TeacherId" />
+                <input type="hidden" name="classid" value="@Course.CourseId" />
+                <button>
+                    Add
+                </button>
+            </form>
+        </div>
+    }
 </div>
 

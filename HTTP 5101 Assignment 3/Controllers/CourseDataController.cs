@@ -69,6 +69,16 @@ namespace HTTP_5101_Assignment_3.Controllers
             return Classes;
         }
 
+        /// <summary>
+        /// Returns the courses that is associated with the teacher
+        /// </summary>
+        /// <param name="teacherid">The Teacher id</param>
+        ///  <returns>
+        /// A list of Course Objects with teacherid field mapped to the teacherid parameter.
+        /// </returns>
+        /// <example>
+        /// GET api/ClassData/ListCoursesForTeacher -> {Course Object 1, Course Object 2, Course Object 3...}
+        /// </example>
         [HttpGet]
         [Route("api/CourseData/ListCoursesForTeacher/{teacherid}")]
         public IEnumerable<Course> ListCoursesForTeacher(int teacherid) 
@@ -88,6 +98,50 @@ namespace HTTP_5101_Assignment_3.Controllers
             Cmd.CommandText = query;
             Cmd.Parameters.AddWithValue("@teacherid", teacherid);
             Cmd.Prepare();
+
+            MySqlDataReader ResultSet = Cmd.ExecuteReader();
+
+            List<Course> Courses = new List<Course>();
+
+            while (ResultSet.Read())
+            {
+                Course NewCourse = new Course();
+                NewCourse.CourseId = Convert.ToInt32(ResultSet["classid"]);
+                NewCourse.CourseCode = ResultSet["classcode"].ToString();
+                NewCourse.CourseName = ResultSet["classname"].ToString();
+
+                Courses.Add(NewCourse);
+            }
+            return Courses;
+        }
+
+        /// <summary>
+        /// Returns the courses that is not associated with any teachers
+        /// </summary>
+        /// <param name="teacherid">The Teacher id</param>
+        ///  <returns>
+        /// A list of Course Objects with teacherid field is null
+        /// </returns>
+        /// <example>
+        /// GET api/ClassData/ListUnassignedCoursesForTeacher -> {Course Object 1, Course Object 2, Course Object 3...}
+        /// </example>
+        [HttpGet]
+        [Route("api/CourseData/ListUnassignedCoursesForTeacher/")]
+        public IEnumerable<Course> ListUnassignedCoursesForTeacher()
+        {
+            //create MySqlconnection
+            MySqlConnection Conn = School.AccessDatabase();
+
+            //open connection
+            Conn.Open();
+
+            //MySqlCommand
+
+            MySqlCommand Cmd = Conn.CreateCommand();
+
+            string query = "SELECT classes.* FROM `classes` WHERE teacherid IS NULL";
+
+            Cmd.CommandText = query;
 
             MySqlDataReader ResultSet = Cmd.ExecuteReader();
 
@@ -152,6 +206,69 @@ namespace HTTP_5101_Assignment_3.Controllers
             Conn.Close();
 
             return NewClass;
+        }
+        /// <summary>
+        /// Set the teacherid column to null on table Class from the MySQL Database through an id. Non-Deterministic.
+        /// </summary>
+        /// <param name="id">The ID of the teacher.</param>
+        /// <example>
+        /// POST api/TeacherData/RemoveCourseForTeacher/2 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        /// "teacherid":"12",
+        /// "classid":"2"
+        /// }
+        /// -> the values of teacherid will be set to null where teacherid = 12 and classid = 2
+        /// </example>
+        [HttpPost]
+        public void RemoveCourseForTeacher(int teacherid, int classid)
+        {
+            MySqlConnection Conn = School.AccessDatabase();
+
+            Conn.Open();
+
+            MySqlCommand command = Conn.CreateCommand();
+
+            string query = "UPDATE classes SET teacherid = NULL WHERE teacherid = @teacherid AND classid = @classid";
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@teacherid", teacherid);
+            command.Parameters.AddWithValue("@classid", classid);
+            command.Prepare();
+            command.ExecuteNonQuery();
+
+            Conn.Close();
+        }
+
+        /// <summary>
+        /// Set the Null teacherid column to selected teacherid on table Class from the MySQL Database through an id. Non-Deterministic.
+        /// </summary>
+        /// <param name="teacherid">The ID of the teacher.</param>
+        /// <example>
+        /// POST api/TeacherData/AddCourseForTeacher/2 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        /// "teacherid":"12",
+        /// "classid":"2"
+        /// }
+        /// -> the values of teacherid will be set to 12 where classid = 2
+        /// </example>
+        [HttpPost]
+        public void AddCourseForTeacher(int teacherid, int classid)
+        {
+            MySqlConnection Conn = School.AccessDatabase();
+
+            Conn.Open();
+
+            MySqlCommand command = Conn.CreateCommand();
+
+            string query = "UPDATE classes SET teacherid = @teacherid WHERE classid = @classid AND teacherid IS NULL";
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@teacherid", teacherid);
+            command.Parameters.AddWithValue("@classid", classid);
+            command.Prepare();
+            command.ExecuteNonQuery();
+
+            Conn.Close();
         }
     }
 }

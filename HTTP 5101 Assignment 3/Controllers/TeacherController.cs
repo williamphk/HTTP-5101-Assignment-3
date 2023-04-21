@@ -37,6 +37,7 @@ namespace HTTP_5101_Assignment_3.Controllers
 
             ViewModel.SelectedTeacher = SelectedTeacher;
             ViewModel.AssociatedCourses = courseController.ListCoursesForTeacher(id);
+            ViewModel.UnassignedCourses = courseController.ListUnassignedCoursesForTeacher();
 
             return View(ViewModel);
         }
@@ -99,6 +100,7 @@ namespace HTTP_5101_Assignment_3.Controllers
             return View(SelectedTeacher);
         }
 
+        //POST : /Teacher/Edit
         [HttpPost]
         public ActionResult Edit(int id, string TeacherFname, string TeacherLname, string TeacherEmployeeNumber, DateTime? TeacherHireDate, decimal? TeacherSalary)
         {
@@ -121,6 +123,24 @@ namespace HTTP_5101_Assignment_3.Controllers
                 ViewBag.ErrorMsg = apiResult.ErrorMsg;
                 return View("Update", UpdatedTeacher);
             }
+        }
+
+        //POST : /Teacher/RemoveCourse
+        [HttpPost]
+        public ActionResult RemoveCourse(int teacherid, int classid)
+        {
+            CourseDataController controller = new CourseDataController();
+            controller.RemoveCourseForTeacher(teacherid, classid);
+            return RedirectToAction("Show/" + teacherid);
+        }
+
+        //POST : /Teacher/AddCourse
+        [HttpPost]
+        public ActionResult AddCourse(int teacherid, int classid)
+        {
+            CourseDataController controller = new CourseDataController();
+            controller.AddCourseForTeacher(teacherid, classid);
+            return RedirectToAction("Show/" + teacherid);
         }
     }
 }
